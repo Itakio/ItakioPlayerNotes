@@ -1,0 +1,10 @@
+## Interface: 80200
+## Title: ItakioPlayerNotes
+## Author: Itakio
+## Version: 0.9
+## DefaultState: enabled
+## SavedVariables: IPNConfig
+## SavedVariables: PlayerNotes
+
+ItakioPlayerNotes.lua
+ItakioPlayerNotes.xml

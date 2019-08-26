@@ -1,0 +1,1305 @@
+<Ui>
+
+ 
+      
+   
+  
+  <Frame name="IPNEntryRowTemplate" virtual="true">
+    <Size x="100" y="16"/>
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Layers>
+      <Layer>
+        <Texture setAllPoints="true">
+          <!--<Color r="0" g="1" b="0" a="0.2"/>-->
+        </Texture>
+        <FontString name="$parentText" inherits="GameFontWhite" justifyH="LEFT">
+          <FontHeight>
+            <AbsValue val="12"/>
+          </FontHeight>
+          <Size x="100" y="16"/>
+        </FontString>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Frame name="$parentChildFontFrame1">
+        <Size x="80" y="16"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT"/>
+        </Anchors>
+        <Layers>
+          <Layer>
+            <Texture setAllPoints="true">
+              <!--<Color r="0" g="1" b="1" a="0.2"/>-->
+            </Texture>
+            <FontString name="$parentText" inherits="GameFontWhite" justifyH="LEFT">
+              <FontHeight>
+                <AbsValue val="12"/>
+              </FontHeight>
+              <Size x="80" y="16"/>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Frame>
+      <Frame name="$parentChildFontFrame2">
+        <Size x="385" y="16"/>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" relativeTo="$parentChildFontFrame1">
+            <Offset>
+              <AbsDimension x="0" y="0" />
+            </Offset>
+          </Anchor>
+        </Anchors>
+        <Layers>
+          <Layer>
+            <Texture setAllPoints="true">
+              <!--<Color r="1" g="1" b="1" a="0.2"/>-->
+            </Texture>
+            <FontString name="$parentText" inherits="GameFontWhite" justifyH="LEFT">
+
+              <FontHeight>
+                <AbsValue val="12"/>
+              </FontHeight>
+              <Size x="385" y="16"/>
+            </FontString>
+          </Layer>
+        </Layers>
+      </Frame>
+
+    </Frames>
+
+  </Frame>
+  
+<Frame name="IPNManualAddFrame" parent="UIParent" inherits="BasicFrameTemplateWithInset" hidden="true" frameStrata="DIALOG" movable="true" enablemouse="true" >
+    <Size x="300" y="150"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" />
+    </Anchors>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton")
+        self.TitleText:SetText("Manual Add")
+table.insert(UISpecialFrames, self:GetName())
+      </OnLoad>
+      
+      <OnDragStart>
+        if not self.isLocked then
+        self:StartMoving()
+        end
+      </OnDragStart>
+      <OnDragStop>
+        self:StopMovingOrSizing()
+      </OnDragStop>
+    </Scripts>
+    <Frames>
+      <Frame name="$parentInstructionTextHolderFrame">
+        <Size x="250" y="20" />
+        <Anchors>
+          <Anchor point="CENTER" y="20"/>
+        </Anchors>
+        <Layers>
+      <Layer>
+        <Texture setAllPoints="true">
+          <!--<Color r="0" g="1" b="0" a="0.2"/>-->
+        </Texture>
+        <FontString name="$parentText" inherits="GameFontWhite" justifyH="CENTER" text="Enter a name for your entry:">
+          <FontHeight>
+            <AbsValue val="12"/>
+          </FontHeight>
+          <Size x="250" y="20"/>
+        </FontString>
+      </Layer>
+    </Layers>
+      </Frame>
+      <EditBox name="$parentEditbox" autoFocus="false" letters="255" >
+        <Size x="130" y="20"/>
+        <Anchors>
+          <Anchor point="CENTER" x="0" y="-5"/>
+        </Anchors>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <Texture name="$parentLeft" file="Interface\Common\Common-Input-Border">
+              <Size x="8" y="20"/>
+              <Anchors>
+                <Anchor point="TOPLEFT" x="-5" y="0"/>
+              </Anchors>
+              <TexCoords left="0" right="0.0625" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentRight" file="Interface\Common\Common-Input-Border">
+              <Size x="8" y="20"/>
+              <Anchors>
+                <Anchor point="RIGHT" x="0" y="0"/>
+              </Anchors>
+              <TexCoords left="0.9375" right="1.0" top="0" bottom="0.625"/>
+            </Texture>
+            <Texture name="$parentMiddle" file="Interface\Common\Common-Input-Border">
+              <Size x="0" y="20"/>
+              <Anchors>
+                <Anchor point="LEFT" relativeTo="$parentLeft" relativePoint="RIGHT"/>
+                <Anchor point="RIGHT" relativeTo="$parentRight" relativePoint="LEFT"/>
+              </Anchors>
+              <TexCoords left="0.0625" right="0.9375" top="0" bottom="0.625"/>
+            </Texture>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnShow>
+            self:SetFocus()
+          </OnShow>
+          <OnEnterPressed>
+            IPNAdd(IPNManualAddFrameEditbox:GetText():gsub("^%l", string.upper))
+            IPNManualAddFrame:Hide()
+          </OnEnterPressed>
+          <OnEscapePressed>
+            self:ClearFocus();
+          </OnEscapePressed>
+        </Scripts>
+        <FontString inherits="FriendsFont_Small">
+          <Color r="1" g="1" b="1" />
+        </FontString>
+      </EditBox>
+
+      <Button name="$parentAddBtn" text="Add" inherits="GameMenuButtonTemplate" >
+        <Size x="60" y="20"/>
+        <NormalFont style="GameFontNormal"/>
+        <HighlightFont style="GameFontNormal"/>
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="6" y="7"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            IPNAdd(IPNManualAddFrameEditbox:GetText():gsub("^%l", string.upper))
+            IPNManualAddFrame:Hide()
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentCancelBtn" text="Cancel" inherits="GameMenuButtonTemplate" >
+        <Size x="60" y="20"/>
+        <NormalFont style="GameFontNormal"/>
+        <HighlightFont style="GameFontNormal"/>
+        <Anchors>
+          <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-6" y="7"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            IPNManualAddFrame:Hide()
+          </OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+  </Frame>
+   <Frame name="IPNDeteleConfimationFrame" parent="UIParent" inherits="BasicFrameTemplateWithInset" hidden="true" frameStrata="DIALOG" movable="true" enablemouse="true" >
+    <Size x="200" y="100"/>
+    <Anchors>
+      <Anchor point="CENTER" relativePoint="CENTER" />
+    </Anchors>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton")
+        self.TitleText:SetText("Confirmation")
+table.insert(UISpecialFrames, self:GetName())
+      </OnLoad>
+      <OnDragStart>
+        if not self.isLocked then
+        self:StartMoving()
+        end
+      </OnDragStart>
+      <OnDragStop>
+        self:StopMovingOrSizing()
+      </OnDragStop>
+    </Scripts>
+    <Frames>
+      <Frame name="$parentTextHolderFrame">
+        <Size x="250" y="20" />
+        <Anchors>
+          <Anchor point="CENTER" y="5"/>
+        </Anchors>
+        <Layers>
+      <Layer>
+        <Texture setAllPoints="true">
+          <!--<Color r="0" g="1" b="0" a="0.2"/>-->
+        </Texture>
+        <FontString name="$parentText" inherits="GameFontWhite" justifyH="CENTER" text="Really delete this entry?">
+          <FontHeight>
+            <AbsValue val="12"/>
+          </FontHeight>
+          <Size x="250" y="20"/>
+        </FontString>
+      </Layer>
+    </Layers>
+      </Frame>
+
+      <Button name="$parentYesBtn" text="Yes" inherits="GameMenuButtonTemplate" >
+        <Size x="60" y="20"/>
+        <NormalFont style="GameFontNormal"/>
+        <HighlightFont style="GameFontNormal"/>
+        <Anchors>
+          <Anchor point="BOTTOMLEFT" relativePoint="BOTTOMLEFT" x="6" y="7"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            IPNDeleteToBeDeletedEntry()
+            self:GetParent():Hide()
+          </OnClick>
+        </Scripts>
+      </Button>
+      <Button name="$parentNoBtn" text="No" inherits="GameMenuButtonTemplate" >
+        <Size x="60" y="20"/>
+        <NormalFont style="GameFontNormal"/>
+        <HighlightFont style="GameFontNormal"/>
+        <Anchors>
+          <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT" x="-6" y="7"/>
+        </Anchors>
+        <Scripts>
+          <OnClick>
+            self:GetParent():Hide()
+          </OnClick>
+        </Scripts>
+      </Button>
+    </Frames>
+  </Frame>
+    
+ 
+  <Button name="PNEntryRowHighlightButtonTemplate" virtual="true">
+    <Size>
+      <AbsDimension x="10" y="16" />
+    </Size>
+    <Scripts>
+      <OnLoad>
+        <!--DebugMsg()-->
+      </OnLoad>
+      <OnDoubleClick>
+        NoteEditorFrame1:Show()
+        PopulateEditBox()
+      </OnDoubleClick>
+    </Scripts>
+    <Layers>
+      <Layer>
+        <Texture name="$parentH" file="Interface\BUTTONS\UI-Listbox-Highlight" alphaMode="ADD" alpha=".7" hidden="true">
+          <!--<Color r="0" g="1" b="0" a="1"/>-->
+        </Texture>
+      </Layer>
+    </Layers>
+    <HighlightTexture file="Interface\BUTTONS\UI-Listbox-Highlight" alphaMode="ADD" />
+  </Button>
+
+
+  <Frame name="NoteEditorFrame1" frameStrata="HIGH" parent="UIParent" inherits="BasicFrameTemplateWithInset" autoFocus="false" movable="true" enablemouse="true" hidden="true" resizable="true">
+    <Size x="400" y="200"/>
+    <Anchors>
+      <Anchor relativeTo="UIParent" point="CENTER" relativePoint="CENTER" />
+    </Anchors>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton")
+        self.TitleText:SetText("Player Notes Editor")
+table.insert(UISpecialFrames, self:GetName())
+      </OnLoad>
+     <OnDragStart>
+   if not self.isLocked then
+    self:StartMoving()
+   end
+  </OnDragStart>
+     <OnDragStop>
+   self:StopMovingOrSizing()
+  </OnDragStop>
+  </Scripts>
+    <Frames>
+      <EditBox name="NoteEditBox1" autoFocus="false">
+        <Anchors>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            IPNConstructEditBox1()
+          </OnLoad>
+          <OnShow>
+            self:SetFocus()
+          </OnShow>
+          <OnEnterPressed>
+                IPNSaveEntry()
+                NoteEditorFrame1:Hide()
+          </OnEnterPressed>
+          <OnEscapePressed>
+            self:ClearFocus()
+          </OnEscapePressed>
+        </Scripts>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <!--<Texture setAllPoints="true">
+              <Color r="0" g="1" b="0" a="0.2"/>
+            </Texture>-->
+          </Layer>
+        </Layers>
+        <FontString name="$parentText" inherits="GameFontWhite"/>
+      </EditBox>
+      <Frame name="$parentButtonDummyFrame" >
+        <Size x="80" y="20"/>
+        <Scripts>
+          <OnLoad>
+          </OnLoad>
+        </Scripts>
+        <Frames>
+          <Button name="$parentCancelBtn" text="Cancel" inherits="GameMenuButtonTemplate">
+            <Size x="80" y="20"/>
+            <NormalFont style="GameFontNormal"/>
+            <HighlightFont style="GameFontNormal"/>
+            <Anchors>
+              <Anchor point="BOTTOMRIGHT" relativeTo="NoteEditorFrame1" relativePoint="BOTTOMRIGHT">
+                <Offset>
+                  <AbsDimension x="-5" y ="5"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                NoteEditorFrame1:Hide();
+              </OnClick>
+            </Scripts>
+          </Button>
+
+
+          <Button name="$parentSaveBtn" text="Save" inherits="GameMenuButtonTemplate" >
+            <Size x="60" y="20"/>
+            <NormalFont style="GameFontNormal"/>
+            <HighlightFont style="GameFontNormal"/>
+            <Anchors>
+              <Anchor point="BOTTOMRIGHT" relativeTo="$parentCancelBtn" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                IPNSaveEntry()
+                NoteEditorFrame1:Hide()
+              </OnClick>
+            </Scripts>
+          </Button>
+        </Frames>
+      </Frame>
+    </Frames>
+  </Frame>
+      
+  <Frame name="IPNExportFrame" frameStrata="HIGH" parent="UIParent" inherits="BasicFrameTemplateWithInset" autoFocus="false" movable="true" enablemouse="true" hidden="true" resizable="true">
+    <Size x="1000" y="800"/>
+    <Anchors>
+      <Anchor relativeTo="UIParent" point="CENTER" relativePoint="CENTER" />
+    </Anchors>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton")
+        self.TitleText:SetText("IPN Export")
+      </OnLoad>
+     <OnDragStart>
+   if not self.isLocked then
+    self:StartMoving()
+   end
+  </OnDragStart>
+     <OnDragStop>
+   self:StopMovingOrSizing()
+  </OnDragStop>
+  </Scripts>
+    <Frames>
+      <EditBox name="IPNExportEditBox1" text="stuff3" autoFocus="false">
+        <Anchors>
+          <!--<Anchor point="TOPLEFT" relativeTo="NoteEditorFrame1.InsetBg" relativePoint="TOPLEFT" />
+          <Anchor point="BOTTOMRIGHT" relativeTo="NoteEditorFrame1.InsetBg" relativePoint="BOTTOMRIGHT">
+          <Offset>
+            <AbsDimension x="0" y="0"/>
+          </Offset>
+        </Anchor>-->
+        </Anchors>
+        <Scripts>
+          <OnShow>
+            self:SetFocus()
+          </OnShow>
+          <OnLoad>
+            ConstructIPNExportEditBox1()
+          </OnLoad>
+          <OnEscapePressed>
+            self:ClearFocus()
+          </OnEscapePressed>
+        </Scripts>
+        <Layers>
+          <Layer level="BACKGROUND">
+            <!--<Texture setAllPoints="true">
+              <Color r="0" g="1" b="0" a="0.2"/>
+            </Texture>-->
+          </Layer>
+        </Layers>
+        <FontString name="$parentText" inherits="GameFontWhite"/>
+      </EditBox>
+
+
+      <Frame name="$parentButtonDummyFrame">
+        <Size x="80" y="20"/>
+        <Scripts>
+          <OnLoad>
+          </OnLoad>
+        </Scripts>
+        <Frames>
+          <Button name="$parentCloseBtn" text="Close" inherits="GameMenuButtonTemplate">
+            <Size x="80" y="20"/>
+            <NormalFont style="GameFontNormal"/>
+            <HighlightFont style="GameFontNormal"/>
+            <Anchors>
+              <Anchor point="BOTTOMRIGHT" relativeTo="IPNExportFrame" relativePoint="BOTTOMRIGHT">
+                <Offset>
+                  <AbsDimension x="-5" y ="5"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                IPNExportFrame:Hide();
+              </OnClick>
+            </Scripts>
+          </Button>
+      
+        </Frames>
+      </Frame>
+    </Frames>
+
+  </Frame>
+
+  <Frame name="IPNMainFrame" scale="1" parent="UIParent" inherits="BasicFrameTemplateWithInset" movable="true" enablemouse="true" hidden="true">
+    <Size>
+      <AbsDimension x="600" y="291"/>
+    </Size>
+    <Anchors>
+      <Anchor point="CENTER"/>
+    </Anchors>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForDrag("LeftButton")
+        self.TitleText:SetText("Player Notes")
+        <!--table.insert(UISpecialFrames, self:GetName())-->
+      </OnLoad>
+
+      <OnDragStart>
+        if not self.isLocked then
+        self:StartMoving()
+        end
+      </OnDragStart>
+      <OnDragStop>
+        self:StopMovingOrSizing()
+      </OnDragStop>
+    </Scripts>
+    <Frames>
+      <Frame name="$parentEntriesFrame" enableMouse="true" movable="true">
+        <Size>
+          <AbsDimension x="600" y="256"/>
+        </Size>
+        <Anchors>
+          <Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="2" y="-20"/>
+        </Anchors>
+        <Scripts>
+          <OnLoad>
+            <!--MyMod_OnLoad()-->
+          </OnLoad>
+        </Scripts>
+
+        <Frames>
+          <Button name="IPNExpandMainFrameBtn">
+            <Size x="28" y="28"/>
+            <Anchors>
+              <Anchor point="TOPRIGHT" relativeTo="$parent" relativePoint="TOPRIGHT" x="-35" y="22"/>
+            </Anchors>
+            <Scripts>
+              <OnLoad>
+                self.TexNorm:SetRotation(1.5708)
+                self.TexPushed:SetRotation(1.5708)
+              </OnLoad>
+              <OnClick>
+                if IPNMainFrameExpandedFrame:IsShown() then 
+                IPNMainFrameExpandedFrame:Hide()
+                else
+                IPNMainFrameExpandedFrame:Show()
+                end
+              </OnClick>
+            </Scripts>
+            <NormalTexture parentKey="TexNorm" file="Interface\Buttons\UI-Panel-CollapseButton-Up"/>
+            <PushedTexture parentKey="TexPushed" file="Interface\Buttons\UI-Panel-CollapseButton-Down"/>
+          <HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight" alphaMode="ADD"/>
+          </Button>
+            
+          <ScrollFrame name="IPNScrollBar" inherits="FauxScrollFrameTemplate" hidden="true">
+            <Anchors>
+              <Anchor point="TOPLEFT">
+                <Offset>
+                  <AbsDimension x="0" y="-8"/>
+                </Offset>
+              </Anchor>
+              <Anchor point="BOTTOMRIGHT">
+                <Offset>
+                  <AbsDimension x="-30" y="-8"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnVerticalScroll>
+                FauxScrollFrame_OnVerticalScroll(self, offset, 16, IPNScrollBar_Update);
+              </OnVerticalScroll>
+              <OnShow>
+                IPNScrollBar_Update()
+              </OnShow>
+            </Scripts>
+          </ScrollFrame>
+
+          
+            
+          <Button name="AddTgtButton" text="Add Tgt" inherits="GameMenuButtonTemplate">
+            <Size x="80" y="20"/>
+            <NormalFont style="GameFontNormal"/>
+            <HighlightFont style="GameFontNormal"/>
+            <Anchors>
+              <Anchor point="TOPRIGHT" relativeTo="IPNMainFrame" relativePoint="BOTTOMRIGHT">
+                <Offset>
+                  <AbsDimension x="-8" y="-4"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                if UnitName("target") then
+                IPNAdd(UnitName("target"));
+                else
+                print("PN: no target; no player added")
+                end
+              </OnClick>
+            </Scripts>
+          <Layers>
+			<Layer level="ARTWORK" textureSubLevel="1">
+				<Texture name="$parentIcon" file="Interface\BUTTONS\UI-Panel-CollapseButton-Up" parentKey="icon">
+					<Size x="12" y="12"/>
+					<Anchors>
+						<Anchor point="CENTER" x="0" y="0"/>
+					</Anchors>
+					<TexCoords left="0.01562500" right="0.20312500" top="0.01562500" bottom="0.20312500"/>
+				</Texture>
+			</Layer>
+		</Layers>
+          
+          </Button>
+
+          <Button name="ManualAddBtn" text="Manual Add" inherits="GameMenuButtonTemplate">
+            <Size x="95" y="20"/>
+            <NormalFont style="GameFontNormal"/>
+            <HighlightFont style="GameFontNormal"/>
+            <Anchors>
+              <Anchor point="BOTTOMRIGHT" relativeTo="AddTgtButton" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                IPNManualAddFrameEditbox:SetText("")
+                IPNManualAddFrame:Show()
+              </OnClick>
+            </Scripts>
+          </Button>
+
+          <Button name="EditBtn" text="View/Edit" inherits="GameMenuButtonTemplate">
+            <Size x="80" y="20"/>
+            <NormalFont style="GameFontNormal"/>
+            <HighlightFont style="GameFontNormal"/>
+            <Anchors>
+              <Anchor point="BOTTOMRIGHT" relativeTo="ManualAddBtn" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                IPNEditBoxOnClick()
+              </OnClick>
+            </Scripts>
+          </Button>
+
+          <Button name="ExportBtn" text="Export" inherits="GameMenuButtonTemplate">
+            <Size x="60" y="20"/>
+            <NormalFont style="GameFontNormal"/>
+            <HighlightFont style="GameFontNormal"/>
+            <Anchors>
+              <Anchor point="BOTTOMRIGHT" relativeTo="EditBtn" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                IPNExportEditBox1AfterExportClick()
+                IPNExportEditBox1:HighlightText()
+                IPNExportFrame:Show();
+              </OnClick>
+            </Scripts>
+          </Button>
+
+
+          <Button name="DeleteBtn" text="Delete" inherits="GameMenuButtonTemplate">
+
+            <Size x="70" y="20"/>
+            <NormalFont style="GameFontNormal"/>
+            <HighlightFont style="GameFontNormal"/>
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="IPNMainFrame" relativePoint="BOTTOMLEFT">
+                <Offset>
+                  <AbsDimension x="8" y="-4"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+                IPNDeteleConfimationFrame:Show()
+                IPNSetSelectedToBeDeleted()
+              </OnClick>
+            </Scripts>
+          </Button>
+
+
+          <Frame name="$parentSortingRow1" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="IPNScrollBar" relativePoint="TOPLEFT">
+                <Offset>
+                  <AbsDimension x="8" y="0"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn1" inherits="PNEntryRowHighlightButtonTemplate">
+                <Size x="100" y="16"/>
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSortByName()
+                  </OnClick>
+                </Scripts>
+                <Layers>
+                  <Layer>
+                    <FontString name="$parentText" text="Name:" inherits="GameFontWhite" justifyH="CENTER">
+                      <FontHeight>
+                        <AbsValue val="12"/>
+                      </FontHeight>
+                      <Size x="100" y="16"/>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </Button>
+              <Button name="$parentHBtn2" inherits="PNEntryRowHighlightButtonTemplate">
+                <Size x="80" y="16"/>
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parentHBtn1" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSortByDate()
+                  </OnClick>
+                </Scripts>
+                <Layers>
+                  <Layer>
+                    <FontString name="$parentText" text="Added on:" inherits="GameFontWhite" justifyH="CENTER">
+                      <FontHeight>
+                        <AbsValue val="12"/>
+                      </FontHeight>
+                      <Size x="80" y="16"/>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </Button>
+              <Button name="$parentHBtn3" inherits="PNEntryRowHighlightButtonTemplate">
+                <Size x="100" y="16"/>
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parentHBtn2" relativePoint="RIGHT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                  </OnClick>
+                </Scripts>
+                <Layers>
+                  <Layer>
+                    <FontString name="$parentText" text="Notes:" inherits="GameFontWhite" justifyH="CENTER">
+                      <FontHeight>
+                        <AbsValue val="12"/>
+                      </FontHeight>
+                      <Size x="100" y="16"/>
+                    </FontString>
+                  </Layer>
+                </Layers>
+              </Button>
+            </Frames>
+          </Frame>
+
+          <Frame name="EntryRow1" inherits="IPNEntryRowTemplate">
+
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="IPNScrollBar" relativePoint="TOPLEFT">
+                <Offset>
+                  <AbsDimension x="8" y="-16"/>
+                </Offset>
+              </Anchor>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(1)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow2" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow1" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(2)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow3" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow2" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(3)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow4" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow3" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(4)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow5" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow4" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(5)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow6" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow5" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(6)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow7" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow6" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(7)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow8" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow7" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(8)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow9" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow8" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(9)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow10" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow9" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(10)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow11" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow10" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(11)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow12" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow11" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(12)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow13" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow12" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(13)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow14" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow13" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(14)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+          <Frame name="EntryRow15" inherits="IPNEntryRowTemplate">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="EntryRow14" relativePoint="BOTTOMLEFT"/>
+            </Anchors>
+            <Frames>
+              <Button name="$parentHBtn" inherits="PNEntryRowHighlightButtonTemplate">
+                <Anchors>
+                  <Anchor point="LEFT" relativeTo="$parent" relativePoint="LEFT" />
+                  <Anchor point="RIGHT" relativeTo="$parentChildFontFrame2" relativePoint="RIGHT" />
+                </Anchors>
+                <Scripts>
+                  <OnClick>
+                    IPNSetSelectedEntry(15)
+                  </OnClick>
+                </Scripts>
+              </Button>
+            </Frames>
+          </Frame>
+
+       
+        </Frames>
+      </Frame>
+      <Frame name="$parentExpandedFrame" inherits="BasicFrameTemplateWithInset" frameStrata="LOW" hidden="true">
+        <Size>
+          <AbsDimension x="400" y="291"/>
+        </Size>
+        <Anchors>
+          <Anchor point="CENTER" relativePoint="RIGHT" />
+        </Anchors>
+        <Layers>
+          <Layer>
+            <FontString name="$parentText1" text="Create a warning message:" inherits="GameFontNormal" justifyH="CENTER">
+              <FontHeight>
+                <AbsValue val="12"/>
+              </FontHeight>
+            
+              <Anchors>
+                <Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-9"/>
+              <Anchor point="TOPLEFT" relativeTo="IPNMainFrame" relativePoint="TOPRIGHT" y="-40"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+        <Scripts>
+          <OnHide>
+            IPNExpandMainFrameBtn.TexNorm:SetRotation(-1.5708)
+            IPNExpandMainFrameBtn.TexPushed:SetRotation(-1.5708)
+          </OnHide>
+          <OnShow>
+            IPNExpandMainFrameBtn.TexNorm:SetRotation(1.5708)
+            IPNExpandMainFrameBtn.TexPushed:SetRotation(1.5708)
+          </OnShow>
+          <OnLoad>
+            self:Show()
+          </OnLoad>
+        </Scripts>
+        <Frames>
+         <Frame name="$parentEditBoxContainerFrame" enableMouse="true">
+								<Size x="150" y="60"/>
+								<Anchors>
+									<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x="-29" y="-65"/>
+								</Anchors>
+								<Frames>
+
+
+                  <EditBox name="$parentEditbox" parentKey="EditBox" multiLine="true" letters="127" autoFocus="false">
+                    <Size x="150" y="50"/>
+                    <Layers>
+                      <Layer level="BACKGROUND">
+                        <Texture parentKey="TopLeftBorder" file="Interface\Common\Common-Input-Border-TL">
+                          <Size x="8" y="8"/>
+                          <Anchors>
+                            <Anchor point="TOPLEFT" x="-4" y="4"/>
+                          </Anchors>
+                        </Texture>
+                        <Texture parentKey="TopRightBorder" file="Interface\Common\Common-Input-Border-TR">
+                          <Size x="8" y="8"/>
+                          <Anchors>
+                            <Anchor point="TOPRIGHT" x="4" y="4"/>
+                          </Anchors>
+                        </Texture>
+                        <Texture parentKey="TopBorder" file="Interface\Common\Common-Input-Border-T">
+                          <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.TopLeftBorder" relativePoint="TOPRIGHT"/>
+                            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.TopRightBorder" relativePoint="BOTTOMLEFT"/>
+                          </Anchors>
+                        </Texture>
+                        <Texture parentKey="BottomLeftBorder" file="Interface\Common\Common-Input-Border-BL">
+                          <Size x="8" y="8"/>
+                          <Anchors>
+                            <Anchor point="BOTTOMLEFT" x="-4" y="-3"/>
+                          </Anchors>
+                        </Texture>
+                        <Texture parentKey="BottomRightBorder" file="Interface\Common\Common-Input-Border-BR">
+                          <Size x="8" y="8"/>
+                          <Anchors>
+                            <Anchor point="BOTTOMRIGHT" x="4" y="-3"/>
+                          </Anchors>
+                        </Texture>
+                        <Texture parentKey="BottomBorder" file="Interface\Common\Common-Input-Border-B">
+                          <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.BottomLeftBorder" relativePoint="TOPRIGHT"/>
+                            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BottomRightBorder" relativePoint="BOTTOMLEFT"/>
+                          </Anchors>
+                        </Texture>
+                        <Texture parentKey="LeftBorder" file="Interface\Common\Common-Input-Border-L">
+                          <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.TopLeftBorder" relativePoint="BOTTOMLEFT"/>
+                            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BottomLeftBorder" relativePoint="TOPRIGHT"/>
+                          </Anchors>
+                        </Texture>
+                        <Texture parentKey="RightBorder" file="Interface\Common\Common-Input-Border-R">
+                          <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.TopRightBorder" relativePoint="BOTTOMLEFT"/>
+                            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.BottomRightBorder" relativePoint="TOPRIGHT"/>
+                          </Anchors>
+                        </Texture>
+                        <Texture parentKey="MiddleBorder" file="Interface\Common\Common-Input-Border-M">
+                          <Anchors>
+                            <Anchor point="TOPLEFT" relativeKey="$parent.LeftBorder" relativePoint="TOPRIGHT"/>
+                            <Anchor point="BOTTOMRIGHT" relativeKey="$parent.RightBorder" relativePoint="BOTTOMLEFT"/>
+                          </Anchors>
+                        </Texture>
+                      </Layer>
+                    </Layers>
+                    <Scripts>
+                      <OnLoad>
+                        self:SetPoint("TOPLEFT", self:GetParent(), "TOPLEFT", 0, 0);
+                        self:SetPoint("BOTTOMRIGHT", self:GetParent(), "BOTTOMRIGHT", 0, 0);
+                        self:SetHitRectInsets(0, 0, 0, 0);
+                        self:SetMultiLine(true);
+                      </OnLoad>
+                      <OnShow>
+                        IPNUpdateWarningEditBox()
+                      </OnShow>
+                      <OnTextChanged>
+                        IPNExpandedEditboxOnTextChanged()
+                      </OnTextChanged>
+                      <OnEscapePressed>
+                        self:ClearFocus();
+                      </OnEscapePressed>
+                    </Scripts>
+                    <FontString inherits="FriendsFont_Small" spacing="2"/>
+                  </EditBox>
+
+                </Frames>
+              </Frame>
+          <CheckButton name="$parentCheckButton1" inherits="InterfaceOptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="$parentEditBoxContainerFrame" relativePoint="BOTTOMLEFT" x="-10" y="-20">
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+              CheckButtonOnClick(1)
+              </OnClick>
+            </Scripts>
+              <Layers>
+          <Layer>
+            <FontString name="$parentText1" text="Display on joining party" inherits="GameFontNormal" justifyH="CENTER">
+              <FontHeight>
+                <AbsValue val="12"/>
+              </FontHeight>
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-7"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>
+          </CheckButton>
+        <CheckButton name="$parentCheckButton2" inherits="InterfaceOptionsCheckButtonTemplate" checked="true">
+            <Anchors>
+              <Anchor point="TOPLEFT" relativeTo="$parentCheckButton1" relativePoint="BOTTOMLEFT" x="" y="-10">
+              </Anchor>
+            </Anchors>
+            <Scripts>
+              <OnClick>
+              CheckButtonOnClick(2)
+              </OnClick>
+            </Scripts>
+              <Layers>
+          <Layer>
+            <FontString name="$parentText1" text="Display on targeting" inherits="GameFontNormal" justifyH="CENTER">
+              <FontHeight>
+                <AbsValue val="12"/>
+              </FontHeight>
+              <Anchors>
+                <Anchor point="TOPLEFT" relativePoint="TOPRIGHT" x="5" y="-7"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+              
+        </Layers>
+        
+          </CheckButton>
+          <Button name="$ParentDefaultButton" text="Set as default for future entries" inherits="GameMenuButtonTemplate">
+          <Size x="80" y="20"/>
+          <NormalFont style="GameFontNormal"/>
+          <HighlightFont style="GameFontNormal"/>
+          <Anchors>
+            <Anchor point="BOTTOMRIGHT" relativePoint="BOTTOMRIGHT">
+              <Offset>
+                <AbsDimension x="-8" y="60"/>
+              </Offset>
+            </Anchor>
+            <Anchor point="TOPLEFT" relativePoint="BOTTOMRIGHT">
+              <Offset>
+                <AbsDimension x="-200" y="80"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+          <Scripts>
+            <OnClick>
+              IPNDefaultBtnOnClick()
+            </OnClick>
+          </Scripts>
+          <Layers>
+            <Layer level="ARTWORK" textureSubLevel="1">
+              <Texture name="$parentIcon" file="Interface\BUTTONS\UI-Panel-CollapseButton-Up" parentKey="icon">
+                <Size x="12" y="12"/>
+                <Anchors>
+                  <Anchor point="CENTER" x="0" y="0"/>
+                </Anchors>
+                <TexCoords left="0.01562500" right="0.20312500" top="0.01562500" bottom="0.20312500"/>
+              </Texture>
+            </Layer>
+          </Layers>
+
+          </Button>
+       
+        </Frames>
+       <!--<Layers>
+          <Layer>
+            <FontString name="$parentText1" text="(a test will occur after checking the boxes)" inherits="GameFontWhite" justifyH="CENTER">
+              <Size x="170" y="30" />
+              <FontHeight>
+                <AbsValue val="12"/>
+              </FontHeight>
+              <Anchors>
+                <Anchor point="TOPLEFT" relativeTo="$parentCheckButton2" relativePoint="BOTTOMRIGHT" x="-20" y="-20"/>
+              </Anchors>
+            </FontString>
+          </Layer>
+        </Layers>-->
+      </Frame>
+
+
+
+    </Frames>
+  </Frame>
+
+  <Button name="IPN_MinimapButton" parent="Minimap" enableMouse="true" movable="true" hidden="true">
+    <Size>
+      <AbsDimension x="33" y="33"/>
+    </Size>
+    <Anchors>
+      <Anchor point="TOPLEFT"/>
+    </Anchors>
+    <Layers>
+      <Layer level="BACKGROUND">
+        <Texture name="IPN_MinimapButton_Icon" file="Interface\Icons\INV_Misc_Note_03">
+          <Size>
+            <AbsDimension x="21" y="21"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT">
+              <Offset>
+                <AbsDimension x="7" y="-6"/>
+              </Offset>
+            </Anchor>
+          </Anchors>
+        </Texture>
+      </Layer>
+      <Layer level="OVERLAY">
+        <Texture file="Interface\Minimap\MiniMap-TrackingBorder">
+          <Size>
+            <AbsDimension x="56" y="56"/>
+          </Size>
+          <Anchors>
+            <Anchor point="TOPLEFT"/>
+          </Anchors>
+        </Texture>
+      </Layer>
+    </Layers>
+    <Frames>
+      <Frame name="IPN_MinimapButton_DraggingFrame" hidden="true">
+        <Scripts>
+          <OnUpdate>
+            IPN_MinimapButton_DraggingFrame_OnUpdate()
+          </OnUpdate>
+        </Scripts>
+      </Frame>
+    </Frames>
+    <HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
+    <Scripts>
+      <OnLoad>
+        self:RegisterForClicks("LeftButtonUp","RightButtonUp")
+        self:RegisterForDrag("LeftButton","RightButton")
+      </OnLoad>
+      <!--<OnEnter>
+        if (not self.dragging) then
+        IPN_MinimapButton_OnEnter(self)
+        end
+      </OnEnter>-->
+      <!--<OnLeave>
+        IPNTooltip:Hide()
+      </OnLeave>-->
+      <OnDragStart>
+        <!--self.dragging = true-->
+        <!--IPNTooltip:Hide()-->
+        self:LockHighlight()
+        IPN_MinimapButton_DraggingFrame:Show()
+      </OnDragStart>
+      <OnDragStop>
+        <!--self.dragging = false-->
+        self:UnlockHighlight()
+        IPN_MinimapButton_DraggingFrame:Hide()
+      </OnDragStop>
+      <OnClick>
+        IPN_MinimapButton_OnClick() 
+      </OnClick>
+    </Scripts>
+  </Button>
+</Ui>
