@@ -10,6 +10,9 @@ if event == "ADDON_LOADED" and name == "ItakioPlayerNotes" then
     IPNScrollBar:Show()
 	IPN_MinimapButton:Show()
 	PopulateEditBox() -- just to change title on initial load
+	if not IPConfig then IPNConfig = {} end 
+	IPNConfig["defaultSetting2"] = 1
+	IPNConfig["defaultSetting2"] = 1
      f:UnregisterEvent("ADDON_LOADED")
 	 
 	 
@@ -51,6 +54,7 @@ SlashCmdList["ITAKIOPLAYERNOTES"] = function(msg)
 		-- end		
 	-- end
 	IPNAdd(UnitName("target"))
+	NoteEditBox1:ClearFocus()
 	else
 
 	if getglobal("IPNMainFrame"):IsShown() then
@@ -352,25 +356,21 @@ end
 
 
 function PartyCheckToDisplayWarning(playerName)
-print("Checking party joiner")
 	for i in ipairs(PlayerNotes) do
 		if PlayerNotes[i][1] == playerName then 
 			if PlayerNotes[i][5] == 1 then
 				DEFAULT_CHAT_FRAME:AddMessage(PlayerNotes[i][4], 1.0, 0.0, 0.0)
 			end
-		else print("Alas...")
 		end
 	end
 end
 
 function TargetCheckToDisplayWarning(playerName)
-print("Checking target")
 	for i in ipairs(PlayerNotes) do
 		if PlayerNotes[i][1] == playerName then 
 			if PlayerNotes[i][6] == 1 then
 				DEFAULT_CHAT_FRAME:AddMessage(PlayerNotes[i][4], 1.0, 0.0, 0.0)
 			end
-		else print("Alas...")
 		end
 	end
 end
@@ -385,7 +385,9 @@ end
 end
 
 function IPNExpandedEditboxOnTextChanged()
+	if PlayerNotes[1] then
 	PlayerNotes[selectedEntry][4] = IPNMainFrameExpandedFrameEditBoxContainerFrameEditbox:GetText()
+	end
 end
 
 function ScrollToBottom()
